@@ -39,11 +39,17 @@ This object utilizes the aforementioned `ORM` connection.
 
 This prepares your statement, but does not run a query against the database.
 
+#### Multi-use or single-use Select usage
+
 Assign the result of `Select()` to a variable if you would like to run multiple methods on the same statement. Append a method to the end of the initialization to jump straight into your query.
 
-Example:
+Example of multiple queries with a single statement:
 ```
-query = Select(target, table) # prepares statement to query a table for an object by name
-first_result = query.one() # Runs fetch_one using the prepared statement
-all_results = query.all() # Runs fetch_all using the prepared statement
+query = Select('*', table) # prepares statement to query all columns for all rows in a table
+first_result = query.one() # Gets the first row found
+all_results = query.all() # Gets all rows from table
+```
+Example of a quick-use select query:
+```
+current_user = Select('*', 'users', name=username).one()
 ```
