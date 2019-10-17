@@ -4,6 +4,12 @@ Mysql is capable of a million things. [`mysql-connector-python`](https://github.
 
 Use the `MysqlConnector` to run raw statements, or use the `Select` object to do a bit of pre-parsing for you when you need to read information from the database.
 
+As a bonus, slimmyorm features a helpful `BaseData` class as a super-general catch all that can be extended for all your data modelling needs. 
+
+See below for more information on the SlimMyORM features.
+
+*****
+
 ## ORM
 
 The `ORM` object makes a minimalistic connection to your mysql database. Connection information must be provided via environment variables. I prefer to use a `.env` file that is specified in my `docker-compose.yml`, but you can google any number of solutions for your preferred deployment.
@@ -87,4 +93,79 @@ reasonable_bobs = slimmyorm.search('users', name='bob', where=where)
 ```
 where="name LIKE %bob% AND children=0 AND fish=1 AND languages>2"
 complex_bobs = slimmyorm.search('users', where=where)
+```
+
+## BaseData
+
+Building data models sucks. This class object simplifies that.
+
+The `BaseData` model will take any row of data and turn it into a python object that you can manipulate however you need.
+
+After the object is initialized (either with a data dict, or with a name to query from its table), every column and it's data become attributes on this object.
+
+_**NOTE:** This is specifically designed to be extended. See below for examples._
+
+- `_table` - When extending this class, be sure to add a `_table` value that can be used for fetching data.
+- `__init__` - You may override this and use the `Super` functionality, but often it is better to simply add your setup logic to your own `setup()` method, which will be automatically called at the end of `__init__`
+    - `name=False` - If you don't pass data when defining this object, it can automaticaly build itself by querying a row on the `_table` that has an exact match to in the `name` column. Further, if the row you're querying does not have a name, you may choose to manually add it using this parameter.
+    - `data=False` - You will usually already have the data row from a `Select()` query. If so, pass that object in here to avoid hitting the database unecessarily.
+- `setup` - This is automatically run at the end of `__init__`. It has no default logic, and is there specifically for building logic that is specific to different data types.
+- `set_attributes` - This transforms data into attributes whenever data is added, but you can also manually run it to add a data set as attributes on this object.
+- `data` - This will give a flat dictionary object that contains each attribute as a key-value pair.
+- `associative_data` - This will give an associative dictionary with the row's `name` as the top level of the object.
+- `remove_attribute` - Similar to popping a dict entry. Use this if you don't want a delete a particular piece of data before getting the final data output.
+- `remove_attributes` - Same as above, but accepts a list.
+
+Simple Example:
+
+```
+from slimmyorm.base_data import BaseData
+
+class ArmorData(BaseData):
+    _table = "armor"
+
+    def setup(self):
+        self.remove_attribute('id')
+
+# Usage:
+
+example_object = ArmorData('second skin')
+print(ArmorData.name)  # output: "Second Skin"
+print(ArmorData.type)  # output: "light armor"
+print(ArmorData.data())
+
+#  output:
+#  {
+#    "name": "Second Skin",
+#    "type": "light armor",
+#    "level": 2,
+#    "id": 17
+#  }
+```
+
+Complex Example:
+```
+from slimmyorm.base_data import BaseData
+from slimmyorm.select import Select
+
+
+class WeaponData(BaseData):
+    def __init__(self, name=False, table=False, data=False, category=False):
+        self._table = table
+        if data and category:
+            data['category'] = category
+        super(WeaponData, self).__init__(name, data)
+
+    def setup(self):
+        self.set_category()
+        self.remove_attribute('id')
+
+    def set_category(self):
+        if not hasattr(self, 'category'):
+            return
+        if not isinstance(self.category, str):
+            data = Select(
+                'category', 'weapon_categories', where=f'id={self.category}'
+                ).one()
+            self.category = data['category'].title()
 ```
