@@ -51,13 +51,24 @@ This object utilizes the aforementioned `ORM` connection.
 
 This prepares your statement, but does not run a query against the database.
 
+_**NOTE**: `multi` is different from the "multi" available in MysqConnection. This should be renamed so that it's usefulness isn't overlooked._
+
+- [`table`](https://github.com/eddie-knight/slimmyorm/blob/master/slimmyorm/select.py#L57) - Exact name of db table to query
+- [`name`](https://github.com/eddie-knight/slimmyorm/blob/master/slimmyorm/select.py#L59) - Query restricted to items matching or containing this string
+- [`db_id`](https://github.com/eddie-knight/slimmyorm/blob/master/slimmyorm/select.py#L88) - Only return results with an `id` value that matches this string/integer
+- [`multi`](https://github.com/eddie-knight/slimmyorm/blob/master/slimmyorm/select.py#L64) - True/False, allows searching for single or multi-word strings. Multi-word strings will be split on spaces to allow non-sequential searching (ie. "Second skin" and "skin second" will have the same results)
+- [`where`](https://github.com/eddie-knight/slimmyorm/blob/master/slimmyorm/select.py#L90) - Custom string that will be placed in the query following `WHERE`
+
 #### Multi-use or single-use Select usage
 
 Assign the result of `Select()` to a variable if you would like to run multiple methods on the same statement. Append a method to the end of the initialization to jump straight into your query.
 
+- [`Select().all()`](https://github.com/eddie-knight/slimmyorm/blob/master/slimmyorm/select.py#L34) - return all rows found by query
+- [`Select().one()`](https://github.com/eddie-knight/slimmyorm/blob/master/slimmyorm/select.py#L41) - return first row found by query
+
 Example of multiple queries with a single statement:
 ```
-query = slimmyorm.Select('*', table) # prepares statement to query all columns for all rows in a table
+query = slimmyorm.Select('*', 'users')  # Target all columns on the 'users' table
 first_result = query.one() # Gets the first row found
 all_results = query.all() # Gets all rows from table
 ```
