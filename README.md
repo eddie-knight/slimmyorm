@@ -1,6 +1,10 @@
 # SlimMyORM
 
-Mysql is capable of a million things. [`mysql-connector-python`](https://github.com/mysql/mysql-connector-python) allows you to do all of those things. **But sometimes we don't need all the things.** This package slims down the complexities of mysql into a few key options that are necessary for simple application logic.
+Mysql is capable of a million things. [`mysql-connector-python`](https://github.com/mysql/mysql-connector-python) allows you to do all of those things. 
+
+**But sometimes we don't need all the things.** 
+
+This package slims down the complexities of mysql into a few key options that are necessary for simple application logic.
 
 Use the `MysqlConnector` to run raw statements, or use the `Select` object to do a bit of pre-parsing for you when you need to read information from the database.
 
@@ -23,6 +27,8 @@ ORM = mysql.connector.connect(
     database=DB_NAME)
 ```
 
+*****
+
 ## MysqlConnection
 
 This object utilizes the aforementioned `ORM` connection.
@@ -37,9 +43,11 @@ This object utilizes the aforementioned `ORM` connection.
 
 - `fetch_all(statement)` - Commits a statment and then immediately returns all results, if any are found.
 
+*****
+
 ## Select
 
-`Select(target, table, multi=False, db_id="", name=False, where=False):`
+`Select(target, table, multi=False, db_id="", name=False, where=False)`
 
 This prepares your statement, but does not run a query against the database.
 
@@ -58,11 +66,13 @@ Example of a quick-use select query:
 current_user = slimmyorm.Select('*', 'users', name=username).one()
 ```
 
+*****
+
 ## Search
 
 `search(self, table, name=False, db_id=False where=False)`
 
-Sometimes you just need to find an item by name. Or by id. That should be way easier than it is with more robust tools.
+Sometimes you just need to find an item by name. Or by id. That should be simple... but robust tools make simple tasks extremely complicated.
 
 Example of searching by name and id:
 ```
@@ -95,13 +105,15 @@ where="name LIKE %bob% AND children=0 AND fish=1 AND languages>2"
 complex_bobs = slimmyorm.search('users', where=where)
 ```
 
+*****
+
 ## BaseData
 
 Building data models sucks. This class object simplifies that.
 
 The `BaseData` model will take any row of data and turn it into a python object that you can manipulate however you need.
 
-After the object is initialized (either with a data dict, or with a name to query from its table), every column and it's data become attributes on this object.
+After the object is initialized, every column and it's data become attributes on this object. Object must be initialized with data from `Select()` or a name. If name is expected, `_table` must be set on the class.
 
 _**NOTE:** This is specifically designed to be extended. See below for examples._
 
