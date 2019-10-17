@@ -19,7 +19,7 @@ class Select:
     def __init__(self,
                  target,
                  table,
-                 multi=False,  # Non-specific order if multi-word names
+                 search=False,
                  db_id=False,
                  name=False,
                  where=False):
@@ -28,7 +28,7 @@ class Select:
         self.id = db_id
         self.name = name
         self.where = where if where else ""
-        self.multi = multi
+        self.search = search
         self._build_select_statement()
 
     def all(self):
@@ -61,7 +61,7 @@ class Select:
         if not self.name:
             return
 
-        if not self.multi:
+        if not self.search:
             self.name = f"name='{self.name}'"
             return
 

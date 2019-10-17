@@ -47,16 +47,14 @@ This object utilizes the aforementioned `ORM` connection.
 
 ## Select
 
-`Select(target, table, multi=False, db_id="", name=False, where=False)`
+`Select(target, table, search=False, db_id="", name=False, where=False)`
 
 This prepares your statement, but does not run a query against the database.
-
-_**NOTE**: `multi` is different from the "multi" available in MysqConnection. This should be renamed so that it's usefulness isn't overlooked._
 
 - [`table`](https://github.com/eddie-knight/slimmyorm/blob/master/slimmyorm/select.py#L57) - Exact name of db table to query
 - [`name`](https://github.com/eddie-knight/slimmyorm/blob/master/slimmyorm/select.py#L59) - Query restricted to items matching or containing this string
 - [`db_id`](https://github.com/eddie-knight/slimmyorm/blob/master/slimmyorm/select.py#L88) - Only return results with an `id` value that matches this string/integer
-- [`multi`](https://github.com/eddie-knight/slimmyorm/blob/master/slimmyorm/select.py#L64) - True/False, allows searching for single or multi-word strings. Multi-word strings will be split on spaces to allow non-sequential searching (ie. "Second skin" and "skin second" will have the same results)
+- [`search`](https://github.com/eddie-knight/slimmyorm/blob/master/slimmyorm/select.py#L64) - True/False, allows searching for single or multi-word strings. Multi-word strings will be split on spaces to allow non-sequential searching (ie. "Second skin" and "skin second" will have the same results)
 - [`where`](https://github.com/eddie-knight/slimmyorm/blob/master/slimmyorm/select.py#L90) - Custom string that will be placed in the query following `WHERE`
 
 #### Multi-use or single-use Select usage
