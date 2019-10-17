@@ -33,9 +33,7 @@ This object utilizes the aforementioned `ORM` connection.
 
 ## Select
 
-This object utilizes the aforementioned `ORM` connection.
-
-```Select(target, table, multi=False, db_id="", name=False, where=False):``` 
+`Select(target, table, multi=False, db_id="", name=False, where=False):`
 
 This prepares your statement, but does not run a query against the database.
 
@@ -45,11 +43,48 @@ Assign the result of `Select()` to a variable if you would like to run multiple 
 
 Example of multiple queries with a single statement:
 ```
-query = Select('*', table) # prepares statement to query all columns for all rows in a table
+query = slimmyorm.Select('*', table) # prepares statement to query all columns for all rows in a table
 first_result = query.one() # Gets the first row found
 all_results = query.all() # Gets all rows from table
 ```
 Example of a quick-use select query:
 ```
-current_user = Select('*', 'users', name=username).one()
+current_user = slimmyorm.Select('*', 'users', name=username).one()
+```
+
+## Search
+
+`search(self, table, name=False, db_id=False where=False)`
+
+Sometimes you just need to find an item by name. Or by id. That should be way easier than it is with more robust tools.
+
+Example of searching by name and id:
+```
+all_the_bobs = slimmyorm.search('users', name='bob')
+user_with_id = slimmyorm.search('users', db_id=123)
+bob_with_id = slimmyorm.search('users', name='bob', db_id=123)
+```
+
+Sometimes you need just need to get entries that are above, below, or within a certain integer limit.
+
+Here is an example where I want to check the "price" column in my "sodas" table:
+```
+expensive_pop = slimmyorm.search_high_low('sodas', 'price', low=1000)
+cheap_pop = slimmyorm.search_high_low('sodas', 'price', high=1)
+all_the_other_pop = slimmyorm.search_high_low('sodas', 'price', low=2, high=999)
+```
+
+Other times, you may need to get a bit more creative with your searching.
+
+Here are a some examples:
+```
+crazy_bobs = slimmyorm.search('users', name='bob', where="children>4")
+```
+```
+where="children > 1 AND children < 5"
+reasonable_bobs = slimmyorm.search('users', name='bob', where=where)
+```
+```
+where="name LIKE %bob% AND children=0 AND fish=1 AND languages>2"
+complex_bobs = slimmyorm.search('users', where=where)
 ```
