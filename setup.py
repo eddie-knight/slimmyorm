@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name="slimmyorm",
-    version="0.0.2",
+    version="0.0.4",
     author="Eddie Knight",
     description="Lightweight wrapper for mysql.connector",
     long_description_content_type="text/markdown",
