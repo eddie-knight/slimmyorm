@@ -20,7 +20,7 @@ class Select:
                  target,
                  table,
                  multi=False,  # Non-specific order if multi-word names
-                 db_id="",
+                 db_id=False,
                  name=False,
                  where=False):
         self.target = target
