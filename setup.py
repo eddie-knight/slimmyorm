@@ -7,7 +7,7 @@ long_description = ("This package slims down the complexities "
 
 setuptools.setup(
     name="slimmyorm",
-    version="0.0.5",
+    version="0.0.6",
     author="Eddie Knight",
     description="Lightweight wrapper for mysql.connector",
     long_description_content_type="text/markdown",
