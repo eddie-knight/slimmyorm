@@ -2,7 +2,8 @@ from .select import Select
 
 
 def search(self, table, name=False, db_id=False, where=False):
-    data = Select('*', table, multi=True, db_id=db_id, name=name, where=where).all()
+    slct = Select('*', table, multi=True, db_id=db_id, name=name, where=where)
+    data = slct.all()
     if data == []:
         return {"Error": f"'{name}' not found when searching"}
     return data
