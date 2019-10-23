@@ -16,7 +16,9 @@ See below for more information on the SlimMyORM features.
 
 ## ORM
 
-The `ORM` object makes a minimalistic connection to your mysql database. Connection information must be provided via environment variables. I prefer to use a `.env` file that is specified in my `docker-compose.yml`, but you can google any number of solutions for your preferred deployment.
+The `ORM` object makes a minimalistic connection to your mysql database. 
+
+**Connection information must be provided via environment variables.** I prefer to use a `.env` file that is specified in my `docker-compose.yml`, but you can google any number of solutions for your preferred deployment.
 
 ```
 ORM = mysql.connector.connect(
@@ -116,9 +118,19 @@ complex_bobs = slimmyorm.search('users', where=where)
 
 *****
 
+## Insert
+
+- `dict_to_table_insert(table, data, truncate=True)` - Accepts a table name, list, and an optional boolean to turn off truncation. List must contain dictionaries that can be inserted using `insert_row`.
+
+- `insert_row(table, row)` - Accepts a table name and python dictionary. Dictionary must contain exact column names as keys. Values must match their respective MySQL column's data type. Values _may_ contain special characters, which will be encoded before inserting.
+
+*****
+
 ## BaseData
 
-Building data models sucks. This class object simplifies that.
+Building data models for every single table _sucks_. 
+
+This object base class simplifies that process.
 
 The `BaseData` model will take any row of data and turn it into a python object that you can manipulate however you need.
 
