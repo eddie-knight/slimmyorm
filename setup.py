@@ -7,7 +7,7 @@ long_description = ("This package slims down the complexities "
 
 setuptools.setup(
     name="slimmyorm",
-    version="0.0.7",
+    version="0.0.8",
     author="Eddie Knight",
     description="Lightweight wrapper for mysql.connector",
     long_description_content_type="text/markdown",
@@ -16,6 +16,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     install_requires=[
             'mysql-connector-python',
+            'pathlib'
         ],
     classifiers=[
         'Development Status :: 3 - Alpha',
