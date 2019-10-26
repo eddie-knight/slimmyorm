@@ -35,14 +35,16 @@ class Select:
         try:
             data = connection.fetch_all(self.statement)
         except mysql.connector.ProgrammingError as e:
-            return {"Error": str(e)}
+            return {"Error": f"Could not select {self.name}: {str(e)}",
+                    "statement": self.statement}
         return data
 
     def one(self):
         try:
             data = connection.fetch_one(self.statement)
         except mysql.connector.ProgrammingError as e:
-            return {"Error": str(e)}
+            return {"Error": f"Could not select {self.name}: {str(e)}",
+                    "statement": self.statement}
         return data
 
     def _build_select_statement(self):
