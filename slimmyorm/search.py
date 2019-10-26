@@ -22,7 +22,7 @@ def search_high_low(table, column, name=False, high=False, low=False):
     else:
         where = high_limit + low_limit  # If one is empty string
 
-    data = Select('*', table, multi=True, name=name, where=where).all()
+    data = Select('*', table, search=True, name=name, where=where).all()
 
     if data == []:
         return {"Error": f"'{name}' not found when searching"}
