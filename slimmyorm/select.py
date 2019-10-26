@@ -29,6 +29,7 @@ class Select:
         self.name = name
         self.where = where if where else ""
         self.search = search
+        self._format_name_search()
         self._build_select_statement()
 
     def all(self):
@@ -48,8 +49,6 @@ class Select:
         return data
 
     def _build_select_statement(self):
-        if self.name:  # for imprecise searches
-            self._format_name_search()
         if self.id or self.where or self.name:
             self._format_where_statement()
         self._parse_statement()
